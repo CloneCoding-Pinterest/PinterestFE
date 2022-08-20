@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
+// import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+// import { useSelector, useDispatch } from "react-redux";
 
 import styled from "styled-components";
 
-import Header from "../components/Header";
-import { checkUser } from "../redux/modules/User";
+import Header from "../components/Common/Header";
+// import { checkUser } from "../redux/modules/User";
 
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
@@ -16,17 +17,18 @@ import MyPage from "../pages/MyPage";
 import NotFound from "../pages/NotFound";
 
 const Router = () => {
-  const dispatch = useDispatch();
-  const userLogin = useSelector(state => state.user.login);
+  // const dispatch = useDispatch();
+  // const userLogin = useSelector(state => state.user.login);
   
-  // 로그인 토큰 확인
-  useEffect(()=> {
-    dispatch(checkUser())
-  }, []);
+  // // 로그인 토큰 확인
+  // useEffect(()=> {
+  //   dispatch(checkUser())
+  // }, []);
 
   return (
     <>
-      <Header userLoggin={userLogin} />
+      {/* <Header userLogin={userLogin} /> */}
+      <Header />
       <Layout>
         <Routes>
           {/* <Route path="/sign/in" element={<Login userLogin={userLogin} />} /> */}

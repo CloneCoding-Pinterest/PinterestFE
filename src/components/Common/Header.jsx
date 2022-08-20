@@ -110,7 +110,6 @@ position: sticky;
 top: 0;
 z-index: 999;
 
-
 .contents_area {
     width: 100%;
     max-width: 1024px;
@@ -134,6 +133,7 @@ z-index: 999;
 .show_at_md {
     display: none;
 }
+
 @media screen and (max-width: 760px) {
     body {
         background-color: red;
