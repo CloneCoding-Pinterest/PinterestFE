@@ -1,20 +1,18 @@
 // 핀 생성 페이지
-/* 핀 아이디(pinId) 및 핀 작성자(author)를 받아오거나 보내주는 부분, 
-   jwt, cookie에 대해 더 생각해보고 코드 수정할 것! */
 
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Layout from "../components/Common/Layout";
 
 import axios from "axios";
 import { getCookie } from '../cookie';
 
 function Post() {
   const navigate = useNavigate();
-  const token = getCookie('token'); // 어떤 방식으로 할 건지 미정이므로 수정될 수 있음
+  const token = getCookie('token'); 
 
   const [inputs, setInputs] = useState({
-    // author: "pin 생성자", // pin 생성자는 user 정보에서 받아옴
     title: "pin 제목",
     content: "pin 내용",
     tags: "pin 태그",
@@ -25,7 +23,6 @@ function Post() {
   const fileInput = useRef();
   const [pictureChanged, setPictureChanged] = useState(false);
   const [pictureUploaded, setPictureUploaded] = useState(false);
-  // const [currPicURL, setCurrPicURL] = useState();
 
   const onChange = (e) => {
     const { value, name } = e.target;
@@ -88,62 +85,71 @@ function Post() {
   }
 
   return (
-    <Contents>
+    <Layout>
+      <Contents>
       <h3>핀 생성 페이지</h3>
 
       {/* form data가 서버로 제출될 때 해당 데이터가 인코딩되는 방법
           : <form> 요소가 파일이나 이미지를 서버로 전송할 때 모든 문자를 인코딩하지 않음. */}
-      <form
-        encType="multipart/form-data" 
-      >
-        <input
-          type="file"
-          placeholder="핀 이미지"
-          name="picValue"
-          ref={fileInput}
-          className={pictureUploaded ? 'unable' : ""}
-          onChange={(e) =>{
-            setPictureChanged(true)
-          }}
-        />
-        
-        <button
-          type="button"
-          onClick={(ev) => pictureUploadHandler(ev)}
-          className={!pictureChanged || pictureUploaded ? "unable" : ""}
-        >
-          핀 이미지 등록
-        </button>
+      <form encType="multipart/form-data">
+        <span>
+          <input
+            type="file"
+            placeholder="핀 이미지"
+            name="picValue"
+            ref={fileInput}
+            className={pictureUploaded ? "unable" : ""}
+            onChange={(e) => {
+              setPictureChanged(true);
+            }}
+          />
+
+          <button
+            type="button"
+            onClick={(ev) => pictureUploadHandler(ev)}
+            className={!pictureChanged || pictureUploaded ? "unable" : ""}
+          >
+            핀 이미지 등록
+          </button>
+        </span>
       </form>
 
+      <br></br>
+
       <form
-        onSubmit={(event) => { postHandler(event) }}
+        onSubmit={(event) => {
+          postHandler(event);
+        }}
       >
-        <input onChange={onChange} 
-          minLength={5} 
-          value={title} 
-          name='title' 
+        <input
+          onChange={onChange}
+          minLength={5}
+          value={title}
+          name="title"
           placeholder="핀 제목"
         />
 
-        <input onChange={onChange} 
-          minLength={5} 
-          value={content} 
-          name='content' 
+        <input
+          onChange={onChange}
+          minLength={5}
+          value={content}
+          name="content"
           placeholder="핀 내용"
         />
 
-        <input onChange={onChange} 
-          minLength={1} 
-          value={tags} 
-          name='tags' 
+        <input
+          onChange={onChange}
+          minLength={1}
+          value={tags}
+          name="tags"
           placeholder="핀 태그"
         />
 
         <button>핀 생성</button>
       </form>
-    </Contents>
-  )
+      </Contents>
+    </Layout>
+  );
 }
 
 export default Post;
