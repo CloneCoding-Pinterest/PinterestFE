@@ -3,8 +3,6 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 // import { useSelector, useDispatch } from "react-redux";
 
-import styled from "styled-components";
-
 import Header from "../components/Common/Header";
 // import { checkUser } from "../redux/modules/User";
 
@@ -29,7 +27,6 @@ const Router = () => {
     <>
       {/* <Header userLogin={userLogin} /> */}
       <Header />
-      <Layout>
         <Routes>
           {/* <Route path="/sign/in" element={<Login userLogin={userLogin} />} /> */}
           <Route path="/sign/up" element={<SignUp />}/>
@@ -52,20 +49,8 @@ const Router = () => {
 
           <Route path="*" element={<NotFound />}/>
         </Routes>
-      </Layout>
     </>
   );
 };
 
 export default Router;
-
-const Layout = styled.div`
-  max-width: 1024px;
-
-  display: flex;
-  flex-direction: column;
-
-  margin: 0 auto;
-  padding: 0 40px;
-  box-sizing: border-box;
-`
