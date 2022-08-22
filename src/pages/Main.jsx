@@ -1,10 +1,11 @@
 // 메인 페이지
+// import InfiniteScroll from "../components/Main/InfiniteScroll";
+// import FinalBoard from '../components/Main/FinalBoard';
 
 // CSS 불러오기
 import styled from "styled-components";
-import MasonryInfiniteScroll from '../components/Main/InfiniteScroll';
 
-function Main() {
+function Login(){
 
   return(
       <Content>
@@ -12,19 +13,13 @@ function Main() {
           메인 페이지
         </strong>
 
-        <MasonryInfiniteScroll>
-          <div><img className="item" alt="img01" src="images/img01.png" /></div>
-          <div><img className="item" alt="img02" src="images/img02.png" /></div>
-          <div><img className="item" alt="img03" src="images/img03.png" /></div>
-          <div><img className="item" alt="img04" src="images/img04.png" /></div>
-          <div><img className="item" alt="img05" src="images/img05.png" /></div>
-          <div><img className="item" alt="img06" src="images/img06.png" /></div>
-        </MasonryInfiniteScroll>
+        {/* <FinalBoard/> */}
+        {/* <InfiniteScroll/> */}
       </Content>
   )
 }
 
-export default Main;
+export default Login;
 
 const Content = styled.div`
   text-align: center;

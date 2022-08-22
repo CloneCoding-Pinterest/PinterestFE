@@ -7,12 +7,13 @@ import Header from "../components/Common/Header";
 // import { checkUser } from "../redux/modules/User";
 
 import Login from "../pages/Login";
-import SignUp from "../pages/SignUp";
+// import SignUp from "../pages/SignUp";
 import Main from "../pages/Main";
 import Post from "../pages/Post";
 import MyPage from "../pages/MyPage";
 // import Profile from "../pages/Profile";
 import NotFound from "../pages/NotFound";
+import FinalBoard from "../components/Main/FinalBoard";
 
 const Router = () => {
   // const dispatch = useDispatch();
@@ -29,14 +30,15 @@ const Router = () => {
       <Header />
         <Routes>
           {/* <Route path="/sign/in" element={<Login userLogin={userLogin} />} /> */}
-          <Route path="/sign/up" element={<SignUp />}/>
+          {/* <Route path="/sign/up" element={<SignUp />}/> */}
 
           {/* <Route path="/" element={<Main userLogin={userLogin} />}/> */}
 
           <Route path="/sign/in" element={ <Login /> } />  
           <Route path="/" element={ <Main /> }/>
 
-          <Route path="/post/" element={ <Post /> }/>
+          {/* <Route path="/post/" element={ <Post /> }/> */}
+          <Route path="/post/" element={ <FinalBoard /> }/>
           <Route path="/mypage" element={ <MyPage /> }/> 
           {/* <Route path="/mypage/profile/:userId" element={ <Profile /> }/> */}
 
