@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 // CSS 불러오기
 import styled from "styled-components";
-import { MdHomeFilled, MdLogin, MdLogout, MdCreate, MdBookmarks } from "react-icons/md";
+import { MdHomeFilled, MdLogin, MdLogout, MdCreate } from "react-icons/md";
 
 function Header(props){
     // const dispatch = useDispatch();
@@ -40,43 +40,24 @@ function Header(props){
                                 홈
                             </span>
                         </Link>
-
-                        {/* 로그인하지 않은 유저의 경우 헤더에 "로그인", "회원가입" 띄우기*/}
-                        {/* {!userLogin && ( 
-                        <> */}
-                            <Link to={"/sign/in"}>
-                                <span className="show_at_md">
-                                    <MdLogin />
-                                </span>
-                                <span className="hide_at_md">
-                                    로그인
-                                </span>
-                            </Link>
-                        {/* </>
-                        )} */}
                         
                         {/* 로그인한 유저의 경우 헤더에 "내 핀", "핀 만들기", "로그아웃" 띄우기*/}
                         {/* {userLogin && (
                         <> */}
                             <Link to="/mypage"> {/* "내 핀" 클릭 시 마이 페이지로 이동 */}
-                                <span className="show_at_md">
-                                    <MdBookmarks />
-                                </span>
-                                <span className="hide_at_md">
-                                    내 핀
-                                </span>
+                                내 핀
+                                <div className="show_at_md"></div>
+                                <div className="hide_at_md"></div>
                             </Link>
-                            
+
                             <Link to="/post"> {/* "핀 만들기" 클릭 시 핀 생성 페이지로 이동 */}
-                                {/* <div className="show_at_md">
+                                <div className="show_at_md">
                                     <MdCreate />
                                 </div>
                                 <div className="hide_at_md">
                                     핀 만들기
-                                </div> */}
+                                </div>
                             </Link>
-
-                            
 
                             <div className="btn" onClick={()=>{ // "로그아웃" 클릭 시 메인 페이지로 이동 
                                 // dispatch(signOutUser())
@@ -91,6 +72,24 @@ function Header(props){
                             </div>
                         {/* </>
                         ) } */}
+
+                        {/* 로그인하지 않은 유저의 경우 헤더에 "로그인", "회원가입" 띄우기*/}
+                        {/* {!userLogin && ( 
+                        <> */}
+                            <Link to={"/sign/in"}>
+                                <span className="show_at_md">
+                                    <MdLogin />
+                                </span>
+                                <span className="hide_at_md">
+                                    로그인
+                                </span>
+                            </Link>
+
+                            <Link to={"/sign/up"}>
+                                회원가입
+                            </Link>
+                        {/* </>
+                        )} */}
                     </div>
                 </div>
             </header>
@@ -105,7 +104,7 @@ const Contents = styled.div`
 line-height: 60px;
 
 box-shadow: 2px 0 10px 0 #ddd;
-background-color: transparent;
+background-color: #fff;
 
 position: sticky;
 top: 0;
