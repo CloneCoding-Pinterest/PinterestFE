@@ -3,14 +3,14 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Layout from "../components/Common/Layout";
+import Layout from "../components/common/Layout";
 
 import axios from "axios";
-import { getCookie } from '../cookie';
+import { getCookie } from "../cookie";
 
 function Post() {
   const navigate = useNavigate();
-  const token = getCookie('token'); 
+  const token = getCookie("token");
 
   const [inputs, setInputs] = useState({
     title: "pin 제목",
@@ -36,17 +36,19 @@ function Post() {
   const postHandler = async (event) => {
     event.preventDefault();
 
-    try{
-      await axios.post('http://도메인 주소/api/pin?title=&content=&tags=', inputs, {
-      headers: {
-        authorization: `Bearer ${token}`
-      }
-    }).then(res => {
-      navigate('/')
-    })
-    } catch(err) {
+    try {
+      await axios
+        .post("http://도메인 주소/api/pin?title=&content=&tags=", inputs, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          navigate("/");
+        });
+    } catch (err) {
       console.log(err);
-      navigate('/*') // 지금은 NotFound 페이지로 연결, 나중에 에러 페이지로 연결되도록 수정: navigate('/error')
+      navigate("/*"); // 지금은 NotFound 페이지로 연결, 나중에 에러 페이지로 연결되도록 수정: navigate('/error')
     }
   };
 
@@ -55,98 +57,98 @@ function Post() {
     ev.preventDefault();
 
     const formData = new FormData();
-    formData.append('picValue', fileInput.current.files[0])
+    formData.append("picValue", fileInput.current.files[0]);
 
-    await axios.post(`http://도메인 주소/api/pin?picUrl=`, formData, {
-      headers: {
-        authorization: `Bearer ${token}`
-      }
-    }).then(res => {
-      const data = res.data;
-      
-      if(data.success){
-        alert('이미지가 등록되었습니다.')
-        setPictureUploaded(true)
-        
-        setInputs({
-          ...inputs,
-          picUrl: data.picUrl,
-        });
-        
-      } else {
-        alert('이미지 등록에 실패하였습니다.')
-      }
-    }).catch(err => {
-        console.log(err)
-        navigate('/*') // 지금은 NotFound 페이지로 연결, 나중에 에러 페이지로 연결되도록 수정: navigate('/error')
-      }
-    )
+    await axios
+      .post(`http://도메인 주소/api/pin?picUrl=`, formData, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        const data = res.data;
 
-  }
+        if (data.success) {
+          alert("이미지가 등록되었습니다.");
+          setPictureUploaded(true);
+
+          setInputs({
+            ...inputs,
+            picUrl: data.picUrl,
+          });
+        } else {
+          alert("이미지 등록에 실패하였습니다.");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate("/*"); // 지금은 NotFound 페이지로 연결, 나중에 에러 페이지로 연결되도록 수정: navigate('/error')
+      });
+  };
 
   return (
     <Layout>
       <Contents>
-      <h3>핀 생성 페이지</h3>
+        <h3>핀 생성 페이지</h3>
 
-      {/* form data가 서버로 제출될 때 해당 데이터가 인코딩되는 방법
+        {/* form data가 서버로 제출될 때 해당 데이터가 인코딩되는 방법
           : <form> 요소가 파일이나 이미지를 서버로 전송할 때 모든 문자를 인코딩하지 않음. */}
-      <form encType="multipart/form-data">
-        <span>
+        <form encType="multipart/form-data">
+          <span>
+            <input
+              type="file"
+              placeholder="핀 이미지"
+              name="picValue"
+              ref={fileInput}
+              className={pictureUploaded ? "unable" : ""}
+              onChange={(e) => {
+                setPictureChanged(true);
+              }}
+            />
+
+            <button
+              type="button"
+              onClick={(ev) => pictureUploadHandler(ev)}
+              className={!pictureChanged || pictureUploaded ? "unable" : ""}
+            >
+              핀 이미지 등록
+            </button>
+          </span>
+        </form>
+
+        <br></br>
+
+        <form
+          onSubmit={(event) => {
+            postHandler(event);
+          }}
+        >
           <input
-            type="file"
-            placeholder="핀 이미지"
-            name="picValue"
-            ref={fileInput}
-            className={pictureUploaded ? "unable" : ""}
-            onChange={(e) => {
-              setPictureChanged(true);
-            }}
+            onChange={onChange}
+            minLength={5}
+            value={title}
+            name="title"
+            placeholder="핀 제목"
           />
 
-          <button
-            type="button"
-            onClick={(ev) => pictureUploadHandler(ev)}
-            className={!pictureChanged || pictureUploaded ? "unable" : ""}
-          >
-            핀 이미지 등록
-          </button>
-        </span>
-      </form>
+          <input
+            onChange={onChange}
+            minLength={5}
+            value={content}
+            name="content"
+            placeholder="핀 내용"
+          />
 
-      <br></br>
+          <input
+            onChange={onChange}
+            minLength={1}
+            value={tags}
+            name="tags"
+            placeholder="핀 태그"
+          />
 
-      <form
-        onSubmit={(event) => {
-          postHandler(event);
-        }}
-      >
-        <input
-          onChange={onChange}
-          minLength={5}
-          value={title}
-          name="title"
-          placeholder="핀 제목"
-        />
-
-        <input
-          onChange={onChange}
-          minLength={5}
-          value={content}
-          name="content"
-          placeholder="핀 내용"
-        />
-
-        <input
-          onChange={onChange}
-          minLength={1}
-          value={tags}
-          name="tags"
-          placeholder="핀 태그"
-        />
-
-        <button>핀 생성</button>
-      </form>
+          <button>핀 생성</button>
+        </form>
       </Contents>
     </Layout>
   );
@@ -155,12 +157,12 @@ function Post() {
 export default Post;
 
 const Contents = styled.div`
-margin-top: 10vh;
+  margin-top: 10vh;
 
-padding: 0 20px;
-box-sizing: border-box;
+  padding: 0 20px;
+  box-sizing: border-box;
 
-form {
+  form {
     max-width: 600px;
     margin: 0 auto;
 
@@ -174,7 +176,8 @@ form {
       font-size: 28px;
     }
 
-    input, button {
+    input,
+    button {
       font-size: 18px;
       padding: 6px 26px;
       box-sizing: border-box;
@@ -183,17 +186,17 @@ form {
       border: none;
       box-shadow: 2px 2px 5px #ddd;
 
-      transition: all .2s;
+      transition: all 0.2s;
     }
-    
+
     button:hover {
       background-color: #ccc;
       cursor: pointer;
     }
 
     .unable {
-      opacity: .5;
+      opacity: 0.5;
       pointer-events: none;
     }
   }
-`
+`;
