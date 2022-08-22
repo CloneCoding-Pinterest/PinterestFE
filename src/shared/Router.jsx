@@ -1,17 +1,12 @@
-import { Route, Routes } from "react-router-dom";
 import LoginCommen from "../components/LoginCommen/LoginCommen";
 import LoginLoading from "../pages/LoginLoading";
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { checkUser } from "../redux/modules/User";
-import Login from "../pages/Login";
+import React from "react";
 import Main from "../pages/Main";
 import Post from "../pages/Post";
 import MyPage from "../pages/MyPage";
 import NotFound from "../pages/NotFound";
 import Detail from "../pages/Detail";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Layout from "../components/common/Layout";
 
 const Router = () => {
   return (
@@ -23,7 +18,6 @@ const Router = () => {
           <Route path="/" element={<Main />} />
           <Route path="/post/" element={<Post />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/post/" element={ userLogin ? <Post /> : <Main/> }/> 
           <Route path="*" element={<NotFound />} />
           <Route path="/detail" element={<Detail />} />
           <Route path="/detail/:id" element={<Detail />} />
