@@ -1,5 +1,3 @@
-// 유저 페이지
-
 // import { createSlice } from "@reduxjs/toolkit";
 // import { setCookie, getCookie, deleteCookie } from '../../cookie';
 
@@ -26,7 +24,7 @@
 //         signInUser: (state, action) => {
 //             const token = action.payload.token;
 //             setCookie("token", token)
-            
+
 //             state.info = action.payload.info;
 //             state.login = true;
 //         },
