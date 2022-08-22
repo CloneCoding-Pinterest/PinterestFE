@@ -1,4 +1,4 @@
-import Header from "../components/Common/Header";
+import Header from "../components/common/Header";
 import LoginCommen from "../components/LoginCommen/LoginCommen";
 import LoginLoading from "../pages/LoginLoading";
 import React from "react";
