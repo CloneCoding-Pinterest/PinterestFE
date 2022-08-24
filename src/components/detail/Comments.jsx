@@ -52,7 +52,7 @@ const Comments = () => {
 
   const fetchComments = async () => {
     const data = await serverAxios.get(
-      `http://3.39.232.153/api/comment?pinId=${pinId}`
+      `http://52.79.103.132/api/comment?pinId=${pinId}`
     );
     setComments(data.data.result.commentList);
   };
@@ -76,7 +76,7 @@ const Comments = () => {
   const onUpdateHandler = async () => {
     const content = updatedComment.content;
     await serverAxios
-      .put(`http://3.39.232.153/api/comment/${editCommentId}`, {
+      .put(`http://52.79.103.132/api/comment/${editCommentId}`, {
         content,
       })
       .then((res) => {
@@ -92,7 +92,7 @@ const Comments = () => {
     if (newcomments === "") {
       return alert("댓글을 입력해주세요");
     }
-    await serverAxios.post(`http://3.39.232.153/api/comment`, newcomments);
+    await serverAxios.post(`http://52.79.103.132/api/comment`, newcomments);
     //comments를 axios.post url주소에 붙이기
     // dispatch(__getComments(pinId));
     fetchComments();
@@ -105,7 +105,7 @@ const Comments = () => {
 
   const onDeleteHandler = async () => {
     await serverAxios
-      .delete(`http://3.39.232.153/api/comment/${editCommentId}`)
+      .delete(`http://52.79.103.132/api/comment/${editCommentId}`)
       .then((res) => {
         console.log(res);
       });

@@ -27,8 +27,9 @@ const Detail = () => {
   // const pins = pinList.find((post) => post.pinId == id);
 
   const fetchDetail = async () => {
-    const data = await serverAxios.get(`http://3.39.232.153/api/pin/${pinId}`);
+    const data = await serverAxios.get(`http://52.79.103.132/api/pin/${pinId}`);
     // console.log(data.data.result.pin);
+    console.log(data);
     setDetail(data.data.result.pin);
   };
 
@@ -43,9 +44,9 @@ const Detail = () => {
           <DetailList>
             <DetailBody>
               <DetailPic>
-                <div>
+                <PicDiv>
                   <PicShow src={detail.picUrl} />
-                </div>
+                </PicDiv>
               </DetailPic>
               <DetailInput>
                 <DetailIcon>
@@ -70,6 +71,7 @@ const Detail = () => {
                           content={detail.content}
                           picture={detail.picUrl}
                           pinId={pinId}
+                          newfetchDetail={fetchDetail}
                         />
                       </ModalBack>
                     ) : null}
@@ -98,9 +100,20 @@ const Detail = () => {
 
 export default Detail;
 
+const PicDiv = styled.div`
+  position: relative;
+  overflow: hidden;
+  width: 300px;
+  height: 450px;
+  border-radius: 8px;
+`;
+
 const PicShow = styled.img`
   margin: auto;
-  object-fit: cover;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const DetailWrap = styled.div`
