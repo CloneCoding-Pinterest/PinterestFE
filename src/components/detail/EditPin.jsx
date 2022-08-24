@@ -1,9 +1,76 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import serverAxios from "../axios/server.axios";
 
-const EditPin = ({ props }) => {
+const EditPin = ({ props, title, content, picture, pinId }) => {
   const [editmenuOpen, setEditMenuOpen] = useState(false);
   const editbackground = useRef();
+
+  const editTitleRef = useRef();
+  const editContentRef = useRef();
+  const [editTitle, setEditTitle] = useState("");
+  const [editContent, setEditContent] = useState("");
+  const [pinDetail, setPinDetail] = useState([]);
+
+  const fetchDetail = async () => {
+    const data = await serverAxios.get(`http://3.39.232.153/api/pin/${pinId}`);
+    setPinDetail(data.data.result.pin);
+  };
+
+  const navigate = useNavigate();
+
+  const onClickEditHandler = async (e) => {
+    e.preventDefault();
+    const EditedTitle = editTitleRef.current.value;
+    const EditedContent = editContentRef.current.value;
+
+    if (title && content) {
+      await serverAxios
+        .put(`http://3.39.232.153/api/pin/${pinId}`, {
+          title: EditedTitle,
+          content: EditedContent,
+        })
+        .then((res) => {
+          console.log(res);
+        });
+    } else {
+      alert("수정내용을 입력해주세요");
+    }
+    setEditMenuOpen(false);
+    props(false);
+    fetchDetail();
+    window.location.reload(`/detail/${pinId}`);
+  };
+
+  const onCancelHandler = () => {
+    setEditMenuOpen(false);
+    props(false);
+  };
+
+  const onDeletePinHandler = async () => {
+    await serverAxios
+      .delete(`http://3.39.232.153/api/pin/${pinId}`)
+      .then((res) => {
+        console.log(res);
+        alert("핀이 삭제되었습니다");
+      });
+    navigate("/main");
+  };
+
+  useEffect(() => {
+    fetchDetail(); //update 될때마다 mount, 이렇게만하면 loop가 끝나지 않음
+  }, []);
+
+  //리렌더링 줄이기 위한 시도
+  // useEffect(() => {
+  //   setEditTitle(title);
+  // }, [title]);
+
+  // useEffect(() => {
+  //   setEditContent(content);
+  // }, [content]);
+
   return (
     <>
       <PinMenuBox>
@@ -40,25 +107,44 @@ const EditPin = ({ props }) => {
                     <PinEditLineOne />
                     <PinEditTitle>
                       <PinTitleName>제목</PinTitleName>
-                      <PinTitleContent></PinTitleContent>
+                      <PinTitleContent
+                        ref={editTitleRef}
+                        name="title"
+                        value={editTitle}
+                        onChange={(e) => setEditTitle(e.target.value)}
+                      ></PinTitleContent>
                     </PinEditTitle>
                     <PinEditLineTwo />
                     <PinEditContent>
                       <PinContentName>설명</PinContentName>
-                      <PinContentContent placeholder="이 핀에 대해 알려주세요..."></PinContentContent>
+                      <PinContentContent
+                        ref={editContentRef}
+                        name="title"
+                        value={editContent}
+                        onChange={(e) => setEditContent(e.target.value)}
+                        placeholder="이 핀에 대해 알려주세요..."
+                      ></PinContentContent>
                     </PinEditContent>
                   </PinEditBody>
-                  <PinEditPic></PinEditPic>
+                  <PinEditPic>
+                    <div>
+                      <img src={picture} />
+                    </div>
+                  </PinEditPic>
                 </PinEditAll>
                 <PinEditBtnSet>
-                  <PinEditCancelBtn>취소</PinEditCancelBtn>
-                  <PinEditSaveBtn>저장</PinEditSaveBtn>
+                  <PinEditCancelBtn onClick={onCancelHandler}>
+                    취소
+                  </PinEditCancelBtn>
+                  <PinEditSaveBtn onClick={onClickEditHandler}>
+                    저장
+                  </PinEditSaveBtn>
                 </PinEditBtnSet>
               </PinEditPage>
             </PinEditModal>
           ) : null}
         </PinEditBoX>
-        <PinDeleteBox>핀 삭제</PinDeleteBox>
+        <PinDeleteBox onClick={onDeletePinHandler}>핀 삭제</PinDeleteBox>
       </PinMenuBox>
     </>
   );
@@ -131,7 +217,6 @@ const PinEditPage = styled.div`
   height: 650px;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   border: 2px solid black;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
   border-radius: 20px;
@@ -164,6 +249,9 @@ const PinEditBody = styled.div`
 `;
 const PinEditPic = styled.div`
   width: 250px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 `;
 
 const PinEditBoard = styled.div`

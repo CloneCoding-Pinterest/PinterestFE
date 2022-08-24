@@ -1,36 +1,65 @@
 {
   "pin": [
     {
-      "pinId": 1,
-      "author": "첫번째 생성자",
-      "title": "pin 제목 첫번째",
-      "content": "pin 내용",
-      "tags": "pin Tag",
-      "picUrl": "https://i.pinimg.com/originals/21/0e/41/210e4165db3382dc1f36f801367883ed.jpg"
+      "isSuccess": true,
+      "message": "Pin 조회에 성공했습니다.",
+      "result": {
+        "pin": {
+          "pinId": 1,
+          "author": "",
+          "title": "",
+          "content": "",
+          "tags": "",
+          "picUrl": "https://i.pinimg.com/originals/21/0e/41/210e4165db3382dc1f36f801367883ed.jpg"
+        }
+      },
+      "isLoading": false,
+      "error": null
     },
     {
-      "pinId": 2,
-      "author": "peter1213",
-      "title": "pin 제목 두번째",
-      "content": "pin 내용",
-      "tags": "pin Tag",
-      "picUrl": "https://i.pinimg.com/originals/6b/08/37/6b0837933fddc4ead69ff5962f038534.jpg"
+      "isSuccess": true,
+      "message": "Pin 조회에 성공했습니다.",
+      "result": {
+        "pin": {
+          "pinId": 2,
+          "author": "",
+          "title": "",
+          "content": "",
+          "tags": "",
+          "picUrl": "https://i.pinimg.com/564x/fb/8a/2c/fb8a2c153f6dc4cc0e18c4365046cab1.jpg"
+        }
+      },
+      "isLoading": false,
+      "error": null
     }
   ],
   "comment": [
     {
-      "isSuccess": true,
-      "message": "댓글 조회에 성공했습니다.",
-      "result": {
-        "commentList": [
-          {
-            "commentId": 1,
-            "author": "",
-            "content": "",
-            "createdAt": ""
-          }
-        ]
-      }
+      "id": 1,
+      "commentId": 1,
+      "author": "peter123",
+      "content": "히히히히",
+      "createdAt": "2hr"
+    },
+    {
+      "content": "하하하하히",
+      "pinId": 1,
+      "id": 3
+    },
+    {
+      "content": "허허허허",
+      "pinId": 1,
+      "id": 4
+    },
+    {
+      "content": "ㄴㄹㄴㄴㄹㄴㄹㄴㄹ",
+      "pinId": 1,
+      "id": 5
+    },
+    {
+      "content": "히히히히",
+      "pinId": 1,
+      "id": 6
     }
   ]
 }

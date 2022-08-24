@@ -2,39 +2,53 @@ import React, { useState, useRef, forwardRef, useEffect } from "react";
 import styled from "styled-components";
 import Layout from "../components/common/Layout";
 import Comments from "../components/detail/Comments";
-import { MdMoreHoriz } from "react-icons/md";
+import { MdMoreHoriz, MdAccountCircle } from "react-icons/md";
 import EditPin from "../components/detail/EditPin";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { __getPins } from "../redux/modules/pinSlice";
+import serverAxios from "../components/axios/server.axios";
 
 const Detail = () => {
   const background = useRef();
   const [pinmenuOpen, setPinMenuOpen] = useState(false);
-  const { id } = useParams();
-  const dispatch = useDispatch();
+  const { pinId } = useParams();
+  // const dispatch = useDispatch();
 
   const [detail, setDetail] = useState([]);
 
+  // useEffect(() => {
+  //   dispatch(__getPins());
+  // }, []);
+
+  // const pinList = useSelector((state) => state.pins.result.pin);
+  // console.log(pinList);
+  // const pins = pinList.find((post) => post.pinId == id);
+  // const pins = pinList.find((post) => post.pinId == id);
+
+  const fetchDetail = async () => {
+    const data = await serverAxios.get(`http://3.39.232.153/api/pin/${pinId}`);
+    // console.log(data.data.result.pin);
+    setDetail(data.data.result.pin);
+  };
+
   useEffect(() => {
-    dispatch(__getPins());
+    fetchDetail(); //update 될때마다 mount, 이렇게만하면 loop가 끝나지 않음
   }, []);
 
-  const pinList = useSelector((state) => state.pins.result.pin);
-  // console.log(pinList);
-  // console.log(pinList);
-  // console.log(pinList);
-  // const pins = pinList.find((post) => post.pinId == id);
-  // const pins = pinList.find((post) => post.pinId == id);
+  console.log(detail);
 
-  // console.log(pins.title);
   return (
     <Layout>
       <DetailWrap>
         <DetailContent>
           <DetailList>
             <DetailBody>
-              <DetailPic></DetailPic>
+              <DetailPic>
+                <div>
+                  <PicShow src={detail.picUrl} />
+                </div>
+              </DetailPic>
               <DetailInput>
                 <DetailIcon>
                   <DetailMenu>
@@ -52,20 +66,27 @@ const Detail = () => {
                           }
                         }}
                       >
-                        <EditPin props={setPinMenuOpen} />
+                        <EditPin
+                          props={setPinMenuOpen}
+                          title={detail.title}
+                          content={detail.content}
+                          picture={detail.picUrl}
+                          pinId={pinId}
+                        />
                       </ModalBack>
                     ) : null}
                   </DetailMenu>
                   <SaveButton>저장</SaveButton>
                 </DetailIcon>
-                <DetailTitle></DetailTitle>
-                {/* {pinList[0].title}  */}
-                <DetailContentSpan></DetailContentSpan>
-                {/* {pinList[0].content} */}
+                <DetailTitle>{detail.title}</DetailTitle>
+
+                <DetailContentSpan>{detail.content}</DetailContentSpan>
+
                 <DetailProfile>
-                  <Profile></Profile>
-                  <ProfileName></ProfileName>
-                  {/* {pinList[0].author} */}
+                  <Profile>
+                    <MdAccountCircle size="30" />
+                  </Profile>
+                  <ProfileName>{detail.author}</ProfileName>
                 </DetailProfile>
                 <Comments />
               </DetailInput>
@@ -78,6 +99,11 @@ const Detail = () => {
 };
 
 export default Detail;
+
+const PicShow = styled.img`
+  margin: auto;
+  object-fit: cover;
+`;
 
 const DetailWrap = styled.div`
   width: 100%;
@@ -116,7 +142,10 @@ const DetailBody = styled.div`
 
 const DetailPic = styled.div`
   width: 50%;
-  display: block;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const DetailInput = styled.div`
