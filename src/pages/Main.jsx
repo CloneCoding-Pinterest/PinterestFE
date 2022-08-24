@@ -1,26 +1,66 @@
-import styled from "styled-components";
-// import MasonryInfiniteScroll from "../components/Main/InfiniteScroll";
+// 핀 생성 모달 및 생성된 핀들을 띄우는 Main이자 Post 페이지
 
-function Main() {
-  return (
-    <Content>
-      <strong>메인 페이지</strong>
-      {/* 
-        <MasonryInfiniteScroll>
-          <div><img className="item" alt="img01" src="images/img01.png" /></div>
-          <div><img className="item" alt="img02" src="images/img02.png" /></div>
-          <div><img className="item" alt="img03" src="images/img03.png" /></div>
-          <div><img className="item" alt="img04" src="images/img04.png" /></div>
-          <div><img className="item" alt="img05" src="images/img05.png" /></div>
-          <div><img className="item" alt="img06" src="images/img06.png" /></div>
-        </MasonryInfiniteScroll> */}
-    </Content>
-  );
+import React from 'react';
+
+import '../styles/final_board_styles.css';
+import Pin from '../components/Pin.js';
+import Modal from '../components/Modal.js';
+
+class Main extends React.Component {
+
+    // FinalBoard는 핀 생성 데이터 pins와 모달 창 보여주기 여부인 show_modal을 파라미터로 보내주는 부모 컴포넌트
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            pins: [], // 디폴트 값으로 핀 생성 데이터는 비어있음
+            show_modal: false // 디폴트 값으로 모달 숨김
+        }
+    }
+
+    // 핀 생성
+    add_pin = pinDetails => {
+        this.setState(_state => {
+            const new_pins = [
+                ..._state.pins
+            ]
+
+            new_pins.push(
+                <Pin pinDetails={pinDetails} key={_state.pins.length} />
+            )
+
+            return {
+                pins: new_pins, // pins에 새로운 데이터 넣고,
+                show_modal: false // 모달 창 숨김
+            }
+        });
+    }
+
+    render() { 
+        return (
+            <div>
+                <div className="navigation_bar">
+                    {/* 핀 생성 버튼 📌 클릭하면 모달 창 보여줌 */}
+                    <div onClick={() => this.setState({ show_modal: true })} className="pint_mock_icon_container add_pin">
+                        <div className="pint_mock_icon">📌</div>
+                    </div>
+                </div>
+
+                <div className="pin_container">
+                    {this.state.pins}
+                </div>
+
+                <div onClick={event => event.target.className === 'add_pin_modal' ? this.setState({ show_modal: false }) : null}
+                    className="add_pin_modal_container"
+                >
+                    {
+                        this.state.show_modal ?
+                            <Modal add_pin={this.add_pin} /> : null
+                    }
+                </div>
+            </div >
+        )
+    }
 }
 
 export default Main;
-
-const Content = styled.div`
-  text-align: center;
-  margin-top: 20vh;
-`;

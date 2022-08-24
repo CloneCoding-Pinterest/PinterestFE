@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import SignUp from "../../pages/Login";
 
-function LoginCommen() {
+function LoginCommon() {
   return (
     <LoginLayout>
       <Container>
@@ -23,7 +23,7 @@ function LoginCommen() {
   );
 }
 
-export default LoginCommen;
+export default LoginCommon;
 
 const LoginLayout = styled.div`
   width: 480px;
@@ -31,7 +31,7 @@ const LoginLayout = styled.div`
   border-radius: 32px;
   position: relative;
   text-align: center;
-  margin: 15% auto;
+  margin: 100px auto;
   min-height: initial;
   box-shadow: rgb(0 0 0 / 45%) 0px 2px 10px;
 `;
