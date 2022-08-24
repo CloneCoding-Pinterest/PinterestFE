@@ -24,7 +24,7 @@ const Router = () => {
           <Route path="/mypage" element={<MyPage />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/detail" element={<Detail />} />
-          <Route path="/detail/:id" element={<Detail />} />
+          <Route path="/detail/:pinId" element={<Detail />} />
         </Routes>
       </BrowserRouter>
     </>

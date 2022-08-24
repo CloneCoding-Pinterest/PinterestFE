@@ -9,6 +9,7 @@ function SignUp() {
   const toKakaoLogin = () => {
     window.location.href = AUTH_ENDPOINT; //카카오톡로그인이 열릴 수 있는 새로운 창이 필요.
   };
+
   return (
     <BtnLayout>
       <LoginBtn onClick={toKakaoLogin}>카카오로 로그인하기</LoginBtn>
