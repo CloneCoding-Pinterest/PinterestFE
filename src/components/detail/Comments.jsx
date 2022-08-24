@@ -28,6 +28,8 @@ const Comments = () => {
     content: "",
   });
 
+  const [editCommentId, setEditCommentId] = useState();
+
   const openModal = () => {
     setModalOpen(!modalOpen);
   };
@@ -71,11 +73,10 @@ const Comments = () => {
     setUpdatedComment({ [name]: value });
   };
 
-  const onUpdateHandler = async (commentId) => {
+  const onUpdateHandler = async () => {
     const content = updatedComment.content;
-    console.log(commentId);
     await serverAxios
-      .put(`http://3.39.232.153/api/comment/${commentId}`, {
+      .put(`http://3.39.232.153/api/comment/${editCommentId}`, {
         content,
       })
       .then((res) => {
@@ -104,12 +105,15 @@ const Comments = () => {
 
   const onDeleteHandler = async () => {
     await serverAxios
-      .delete(`http://3.39.232.153/api/comment/${comments[0].commentId}`)
+      .delete(`http://3.39.232.153/api/comment/${editCommentId}`)
       .then((res) => {
         console.log(res);
       });
     fetchComments();
+    setCommnetMenuOpen(false);
   };
+
+  // console.log(comments);
 
   return (
     <>
@@ -141,6 +145,7 @@ const Comments = () => {
                       <CommentOptionsModal>
                         <MdMoreHoriz
                           onClick={() => {
+                            setEditCommentId(comment.commentId);
                             setCommnetMenuOpen(true);
                           }}
                         />
@@ -153,15 +158,7 @@ const Comments = () => {
                               }
                             }}
                           >
-                            {comment.commentId}
                             <CommentMenuBox onClick={(e) => e.stopPropagation}>
-                              {comment.commentId}
-                              {/* <CommentEditBoX onClick={onEditHandler}>
-                                댓글 수정
-                              </CommentEditBoX>
-                              <CommentDeleteBox onClick={onDeleteHandler}>
-                                댓글 삭제
-                              </CommentDeleteBox> */}
                               {edit ? (
                                 <>
                                   <div>
@@ -177,13 +174,7 @@ const Comments = () => {
                                     <button onClick={onCancelHandler}>
                                       취소
                                     </button>
-                                    <button
-                                      onClick={() => {
-                                        // console.log(comment);
-                                        console.log(comment.commentId);
-                                        onUpdateHandler(comment.commentId);
-                                      }}
-                                    >
+                                    <button onClick={onUpdateHandler}>
                                       저장
                                     </button>
                                   </div>
