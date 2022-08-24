@@ -36,8 +36,6 @@ const Detail = () => {
     fetchDetail(); //update 될때마다 mount, 이렇게만하면 loop가 끝나지 않음
   }, []);
 
-  console.log(detail);
-
   return (
     <Layout>
       <DetailWrap>
