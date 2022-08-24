@@ -2,56 +2,79 @@
 // Post 페이지와 동격
 // 😀 serverAxios를 통해 POST 요청으로 변경
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from "react";
 // import { useNavigate } from "react-router-dom";
 
 // 데이터 주고받기
 // import { getCookie } from '../cookie';
 import serverAxios from "./axios/server.axios";
 
-import '../styles/modal_styles.css';
+import "../styles/modal_styles.css";
 
-function upload_img(event, inputs, setInputs, setShowLabel, setShowModalPin) {
-    if (event.target.files && event.target.files[0]) {
-        if (/image\/*/.test(event.target.files[0].type)) {
-            const reader = new FileReader();
+//1. 별도의 state로 얼려두기
+// function upload_img(event, inputs, setInputs, setShowLabel, setShowModalPin) {
+//   if (event.target.files && event.target.files[0]) {
+//     if (/image\/*/.test(event.target.files[0].type)) {
+//       const reader = new FileReader();
 
-            reader.onload = function () {
-                setInputs({
-                    ...inputs,
-                    picUrl: reader.result
-                });
-                setShowLabel(false);
-                setShowModalPin(true);
-            }
+//       reader.onload = function () {
+//         setInputs({
+//           ...inputs,
+//           picUrl: reader.result,
+//         });
+//         setShowLabel(false);
+//         setShowModalPin(true);
+//       };
 
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    }
-}
+//       reader.readAsDataURL(event.target.files[0]);
+//     }
+//   }
+// }
 
 // 이미지 크기 확인하는 함수
 function check_size(event) {
-    const image = event.target;
+  const image = event.target;
 
-    image.classList.add('pin_max_width');
+  image.classList.add("pin_max_width");
 
-    if (
-        image.getBoundingClientRect().width < image.parentElement.getBoundingClientRect().width ||
-        image.getBoundingClientRect().height < image.parentElement.getBoundingClientRect().height
-    ) {
-        image.classList.remove('pin_max_width');
-        image.classList.add('pin_max_height');
-    }
+  if (
+    image.getBoundingClientRect().width <
+      image.parentElement.getBoundingClientRect().width ||
+    image.getBoundingClientRect().height <
+      image.parentElement.getBoundingClientRect().height
+  ) {
+    image.classList.remove("pin_max_width");
+    image.classList.add("pin_max_height");
+  }
 
-    image.style.opacity = 1;
+  image.style.opacity = 1;
 }
 
 // Main.jsx에서 add_pin={this.add_pin}를 파라미터로 받아오는 자식 컴포넌트
 function Modal() {
+  const [fileupload, setFileUpload] = useState([]);
+  function upload_img(event, inputs, setInputs, setShowLabel, setShowModalPin) {
+    setFileUpload(event.target.files[0]);
+    if (event.target.files && event.target.files[0]) {
+      if (/image\/*/.test(event.target.files[0].type)) {
+        const reader = new FileReader();
 
-    const [showLabel, setShowLabel] = useState(true);
-    const [showModalPin, setShowModalPin] = useState(false);
+        reader.onload = function () {
+          setInputs({
+            ...inputs,
+            picUrl: reader.result,
+          });
+          setShowLabel(false);
+          setShowModalPin(true);
+        };
+
+        reader.readAsDataURL(event.target.files[0]);
+      }
+    }
+  }
+
+  const [showLabel, setShowLabel] = useState(true);
+  const [showModalPin, setShowModalPin] = useState(false);
 
   // 핀 이미지를 담을 useRef 및 useState 설정
   const fileInput = useRef();
@@ -59,41 +82,44 @@ function Modal() {
   const [pictureUploaded, setPictureUploaded] = useState(false);
 
   // 핀 이미지 파일에 대해 POST 요청
-    // const pictureUploadHandler = async (ev) => {
-    //   ev.preventDefault();
-    //   console.log("이미지 POST");
-    //   const formData = new FormData();
-    //   formData.append("picValue", fileInput.current.files[0]);
+  const pictureUploadHandler = async (ev, add_pin) => {
+    ev.preventDefault();
+    console.log("이미지 POST");
+    const formData = new FormData();
+    formData.append("picValue", fileupload);
+    console.log(fileupload);
+    await serverAxios
+      .post(
+        `http://52.79.103.132/api/pin?title=${inputs.title}&content=${inputs.content}&picSize=${inputs.picSize}`,
+        formData
+      )
+      .then((res) => {
+        const data = res.data;
+        console.log(res);
 
-    //   await serverAxios
-    //     .post(`http://52.79.103.132/api/pin?picUrl=`, formData, {})
-    //     .then((res) => {
-    //       const data = res.data;
+        if (data.success) {
+          alert("이미지가 등록되었습니다.");
+          setPictureUploaded(true);
 
-    //       if (data.success) {
-    //         alert("이미지가 등록되었습니다.");
-    //         setPictureUploaded(true);
-
-    //         setInputs({
-    //           ...inputs,
-    //           picUrl: data.picUrl,
-    //         });
-    //       } else {
-    //         alert("이미지 등록에 실패하였습니다.");
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // };
+          setInputs({
+            ...inputs,
+            picUrl: data.picUrl,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   // 핀 제목 및 내용 데이터를 담을 ueState 설정
   const [inputs, setInputs] = useState({
     title: "",
     content: "",
     picSize: "small",
+    picUrl: "",
   });
-  const { title, content } = inputs;
+  // const { title, content } = inputs;
 
   // input에서 핀 제목 및 내용 변경사항을 저장하는 함수
   const onChange = (e) => {
@@ -104,37 +130,43 @@ function Modal() {
     });
   };
 
-//   const formData = new FormData();
-//   formData.append("picValue", fileInput.current.files[0]);
-     console.log(fileInput.current);
+  console.log(inputs);
 
-  // 핀 제목, 내용에 대해 POST 요청
-  const postHandler = async (event) => {
-    event.preventDefault();
+  //   const formData = new FormData();
+  //   formData.append("picValue", fileInput.current.files[0]);
+  // console.log(fileInput.current);
 
-    // console.log(inputs.title);
+  // // 핀 제목, 내용에 대해 POST 요청
+  // const postHandler = async (event) => {
+  //   event.preventDefault();
 
-    // 핀 제목과 내용이 모두 채워지지 않았을 경우
-    if (
-      title === "" ||
-      content === ""
-    //   picUrl === ""
-    ) {
-      alert("핀의 제목과 내용을 모두 입력해 주세요");
-      return;
-    }
+  //   // console.log(inputs.title);
 
-    try {
-      await serverAxios
-        .post(
-          `http://52.79.103.132/api/pin?title=${inputs.title}&content=${inputs.content}&picSize=${inputs.picSize}`, inputs
-        ).then((res) => { // 핀 제목 및 내용 POST 성공 시
-          console.log(res);
-        });
-    } catch (err) { // POST 실패 시
-      console.log(err);
-    }
-  };
+  //   // 핀 제목과 내용이 모두 채워지지 않았을 경우
+  //   if (
+  //     title === "" ||
+  //     content === ""
+  //     //   picUrl === ""
+  //   ) {
+  //     alert("핀의 제목과 내용을 모두 입력해 주세요");
+  //     return;
+  //   }
+
+  //   try {
+  //     await serverAxios
+  //       .post(
+  //         `http://52.79.103.132/api/pin?title=${inputs.title}&content=${inputs.content}&picSize=${inputs.picSize}`,
+  //         inputs
+  //       )
+  //       .then((res) => {
+  //         // 핀 제목 및 내용 POST 성공 시
+  //         console.log(res);
+  //       });
+  //   } catch (err) {
+  //     // POST 실패 시
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <div className="add_pin_modal">
@@ -154,9 +186,9 @@ function Modal() {
             <label
               htmlFor="upload_img"
               id="upload_img_label"
-                style={{
-                  display: showLabel ? "block" : "none",
-                }}
+              style={{
+                display: showLabel ? "block" : "none",
+              }}
             >
               <div className="upload_img_container">
                 <div id="dotted_border">
@@ -172,30 +204,39 @@ function Modal() {
                 </div>
               </div>
 
-              <input onChange={
-                                event => upload_img(event, inputs, setInputs, setShowLabel, setShowModalPin)} 
-                                type="file" 
-                                name="upload_img" 
-                                id="upload_img" 
-                                value="" />
+              <input
+                onChange={(event) =>
+                  upload_img(
+                    event,
+                    inputs,
+                    setInputs,
+                    setShowLabel,
+                    setShowModalPin
+                  )
+                }
+                type="file"
+                name="upload_img"
+                id="upload_img"
+                value=""
+                ref={fileInput}
+              />
 
               {/* 이미지 파일 올리기  */}
-              <form encType="multipart/form-data">
+              <form>
                 <span>
                   <input
                     type="file"
                     placeholder="핀 이미지"
                     name="picValue"
-                    ref={fileInput}
                     className={pictureUploaded ? "unable" : ""}
                     onChange={(e) => {
                       setPictureChanged(true);
                     }}
                   />
-                  
+
                   <div className="section3">
-                  <div className="save_from_site">
-                  {/* <button
+                    <div className="save_from_site">
+                      {/* <button
                     type="button"
                     onClick={(ev) => pictureUploadHandler(ev)}
                     className={
@@ -204,7 +245,7 @@ function Modal() {
                   >
                     핀 이미지 등록
                   </button> */}
-                  </div>
+                    </div>
                   </div>
                 </span>
               </form>
@@ -212,9 +253,9 @@ function Modal() {
 
             <div
               className="modals_pin"
-                style={{
-                  display: showModalPin ? "block" : "none",
-                }}
+              style={{
+                display: showModalPin ? "block" : "none",
+              }}
             >
               <div className="pin_image">
                 <img onLoad={check_size} src={inputs.picUrl} alt="pin_image" />
@@ -226,11 +267,11 @@ function Modal() {
             <div className="save_from_site">사이트에서 저장</div>
           </div> */}
         </div>
-       
+
         <div className="side" id="right_side">
           <form
             onSubmit={(event) => {
-              postHandler(event);
+              pictureUploadHandler(event);
             }}
           >
             {/* 사진 크기 선택 후 저장 */}
@@ -267,7 +308,6 @@ function Modal() {
                 className="new_pin_input"
               />
             </div>
-
           </form>
         </div>
       </div>

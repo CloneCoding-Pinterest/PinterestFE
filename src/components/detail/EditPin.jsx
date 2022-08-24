@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import serverAxios from "../axios/server.axios";
 
-const EditPin = ({ props, title, content, picture, pinId }) => {
+const EditPin = ({ props, title, content, picture, pinId, newfetchDetail }) => {
   const [editmenuOpen, setEditMenuOpen] = useState(false);
   const editbackground = useRef();
 
@@ -14,7 +14,7 @@ const EditPin = ({ props, title, content, picture, pinId }) => {
   const [pinDetail, setPinDetail] = useState([]);
 
   const fetchDetail = async () => {
-    const data = await serverAxios.get(`http://3.39.232.153/api/pin/${pinId}`);
+    const data = await serverAxios.get(`http://52.79.103.132/api/pin/${pinId}`);
     setPinDetail(data.data.result.pin);
   };
 
@@ -27,7 +27,7 @@ const EditPin = ({ props, title, content, picture, pinId }) => {
 
     if (title && content) {
       await serverAxios
-        .put(`http://3.39.232.153/api/pin/${pinId}`, {
+        .put(`http://52.79.103.132/api/pin/${pinId}`, {
           title: EditedTitle,
           content: EditedContent,
         })
@@ -39,8 +39,8 @@ const EditPin = ({ props, title, content, picture, pinId }) => {
     }
     setEditMenuOpen(false);
     props(false);
-    fetchDetail();
-    window.location.reload(`/detail/${pinId}`);
+    newfetchDetail();
+    // window.location.reload(`/detail/${pinId}`);
   };
 
   const onCancelHandler = () => {
@@ -50,7 +50,7 @@ const EditPin = ({ props, title, content, picture, pinId }) => {
 
   const onDeletePinHandler = async () => {
     await serverAxios
-      .delete(`http://3.39.232.153/api/pin/${pinId}`)
+      .delete(`http://52.79.103.132/api/pin/${pinId}`)
       .then((res) => {
         console.log(res);
         alert("핀이 삭제되었습니다");
@@ -127,9 +127,9 @@ const EditPin = ({ props, title, content, picture, pinId }) => {
                     </PinEditContent>
                   </PinEditBody>
                   <PinEditPic>
-                    <div>
-                      <img src={picture} />
-                    </div>
+                    <PicEditDiv>
+                      <PicEditimg src={picture} />
+                    </PicEditDiv>
                   </PinEditPic>
                 </PinEditAll>
                 <PinEditBtnSet>
@@ -151,6 +151,22 @@ const EditPin = ({ props, title, content, picture, pinId }) => {
 };
 
 export default EditPin;
+
+const PicEditDiv = styled.div`
+  position: relative;
+  overflow: hidden;
+  width: 200px;
+  height: 450px;
+  border-radius: 8px;
+`;
+
+const PicEditimg = styled.img`
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
 
 const PinMenuBox = styled.div`
   position: relative;
