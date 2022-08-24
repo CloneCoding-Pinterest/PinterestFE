@@ -4,20 +4,31 @@ import {
   MdKeyboardArrowRight,
   MdKeyboardArrowDown,
   MdMoreHoriz,
+  MdAccountCircle,
 } from "react-icons/md";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { __addComments, __getComments } from "../../redux/modules/commentSlice";
+import serverAxios from "../axios/server.axios";
 
 const Comments = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [buttonOpen, setButtonOpen] = useState(false);
   const [commentMenuOpen, setCommnetMenuOpen] = useState(false);
   const commentback = useRef();
-  const [comments, setComments] = useState("");
+  const [comments, setComments] = useState([]);
+  const [newcomments, setNewComments] = useState({
+    content: "",
+  });
   const commentInput = useRef();
-  const { commentId } = useParams();
+  const { pinId } = useParams();
+
+  const [edit, setEdit] = useState(false);
+  const [updatedComment, setUpdatedComment] = useState({
+    content: "",
+  });
+
+  const [editCommentId, setEditCommentId] = useState();
 
   const openModal = () => {
     setModalOpen(!modalOpen);
@@ -31,29 +42,78 @@ const Comments = () => {
     setButtonOpen(false);
   };
 
-  const dispatch = useDispatch();
+  const onEditHandler = () => {
+    setEdit(true);
+  };
+
+  const onCancelHandler = () => {
+    setEdit(false);
+  };
+
+  const fetchComments = async () => {
+    const data = await serverAxios.get(
+      `http://3.39.232.153/api/comment?pinId=${pinId}`
+    );
+    setComments(data.data.result.commentList);
+  };
+
+  useEffect(() => {
+    fetchComments(); //update 될때마다 mount, 이렇게만하면 loop가 끝나지 않음
+  }, []);
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
-    setComments({ ...comments, [name]: value });
-    // setComments(e.target.value);
+    setNewComments({ ...newcomments, [name]: value, pinId: parseInt(pinId) });
   };
 
-  useEffect(() => {}, []);
+  const onChangeCommentEdit = (e) => {
+    setEdit(true);
+    // fetchComments();
+    const { name, value } = e.target;
+    setUpdatedComment({ [name]: value });
+  };
+
+  const onUpdateHandler = async () => {
+    const content = updatedComment.content;
+    await serverAxios
+      .put(`http://3.39.232.153/api/comment/${editCommentId}`, {
+        content,
+      })
+      .then((res) => {
+        console.log(res);
+      });
+    setEdit(false);
+    setCommnetMenuOpen(false);
+    fetchComments();
+  };
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    if (comments === "") {
+    if (newcomments === "") {
       return alert("댓글을 입력해주세요");
     }
-    await axios.post("http://localhost:3001/comment", comments);
-    dispatch(__getComments(commentId));
-    // setComments("");
+    await serverAxios.post(`http://3.39.232.153/api/comment`, newcomments);
+    //comments를 axios.post url주소에 붙이기
+    // dispatch(__getComments(pinId));
+    fetchComments();
+
+    setNewComments("");
+    //dispatch로 reduceer함수실행(__getComments함수에 commentId를 같이 보내줌)
     // dispatch(__getComments);
     // commentInput.current.value = "";
   };
 
-  console.log(comments);
+  const onDeleteHandler = async () => {
+    await serverAxios
+      .delete(`http://3.39.232.153/api/comment/${editCommentId}`)
+      .then((res) => {
+        console.log(res);
+      });
+    fetchComments();
+    setCommnetMenuOpen(false);
+  };
+
+  // console.log(comments);
 
   return (
     <>
@@ -67,51 +127,88 @@ const Comments = () => {
         </CommentList>
         {modalOpen == true ? (
           <>
-            <CommentWrap>
-              <ProfileComment></ProfileComment>
-              <ContentWrap>
-                <UserWrap>
-                  <IdComment>peter12130627</IdComment>
-                  <ContentComment>하하하하</ContentComment>
-                </UserWrap>
-                <OptionsComment>
-                  <CreatedAtTime>2h</CreatedAtTime>
-                  <DoubleComment>답변</DoubleComment>
-                  <Like>♥</Like>
-                  <CommentOptionsModal>
-                    <MdMoreHoriz
-                      onClick={() => {
-                        setCommnetMenuOpen(true);
-                      }}
-                    />
-                    {commentMenuOpen == true ? (
-                      <CommentBack
-                        ref={commentback}
-                        onClick={(e) => {
-                          if (commentback.current === e.target) {
-                            setCommnetMenuOpen(false);
-                          }
-                        }}
-                      >
-                        <CommentMenuBox>
-                          <CommentEditBoX>핀 수정</CommentEditBoX>
-                          <CommentDeleteBox>핀 삭제</CommentDeleteBox>
-                        </CommentMenuBox>
-                      </CommentBack>
-                    ) : null}
-                  </CommentOptionsModal>
-                </OptionsComment>
-              </ContentWrap>
-            </CommentWrap>
+            {comments.map((comment) => (
+              <div key={comment.commentId}>
+                <CommentWrap>
+                  <ProfileComment>
+                    <MdAccountCircle size="28" />
+                  </ProfileComment>
+                  <ContentWrap>
+                    <UserWrap>
+                      <IdComment>{comment.author}</IdComment>
+                      <ContentComment>{comment.content}</ContentComment>
+                    </UserWrap>
+                    <OptionsComment>
+                      <CreatedAtTime>{comment.createdAt}</CreatedAtTime>
+                      <DoubleComment>답변</DoubleComment>
+                      <Like>♥</Like>
+                      <CommentOptionsModal>
+                        <MdMoreHoriz
+                          onClick={() => {
+                            setEditCommentId(comment.commentId);
+                            setCommnetMenuOpen(true);
+                          }}
+                        />
+                        {commentMenuOpen == true ? (
+                          <CommentBack
+                            ref={commentback}
+                            onClick={(e) => {
+                              if (commentback.current === e.target) {
+                                setCommnetMenuOpen(false);
+                              }
+                            }}
+                          >
+                            <CommentMenuBox onClick={(e) => e.stopPropagation}>
+                              {edit ? (
+                                <>
+                                  <div>
+                                    <CommentEditInput
+                                      type="text"
+                                      name="content"
+                                      value={updatedComment.content}
+                                      onChange={onChangeCommentEdit}
+                                      placeholder="수정댓글을 입력해주세요"
+                                    />
+                                  </div>
+                                  <div>
+                                    <button onClick={onCancelHandler}>
+                                      취소
+                                    </button>
+                                    <button onClick={onUpdateHandler}>
+                                      저장
+                                    </button>
+                                  </div>
+                                </>
+                              ) : (
+                                <>
+                                  <CommentEditBoX onClick={onEditHandler}>
+                                    댓글 수정
+                                  </CommentEditBoX>
+                                  <CommentDeleteBox onClick={onDeleteHandler}>
+                                    댓글 삭제
+                                  </CommentDeleteBox>
+                                </>
+                              )}
+                            </CommentMenuBox>
+                          </CommentBack>
+                        ) : null}
+                      </CommentOptionsModal>
+                    </OptionsComment>
+                  </ContentWrap>
+                </CommentWrap>
+              </div>
+            ))}
             <ModalComment>
               <CommentInputSet>
-                <CommentProfile></CommentProfile>
+                <CommentProfile>
+                  <MdAccountCircle size="36" />
+                </CommentProfile>
                 <CommentInput
                   placeholder="댓글 추가"
                   onClick={openButton}
                   type="text"
                   name="content"
-                  value={comments.content}
+                  value={newcomments.content || ""}
                   onChange={onChangeHandler}
                   ref={commentInput}
                 ></CommentInput>
@@ -135,6 +232,16 @@ const Comments = () => {
 };
 
 export default Comments;
+
+const CommentEditInput = styled.input`
+  width: 300px;
+  height: 40px;
+  border-radius: 16px;
+  border: 1px solid gray;
+  cursor: auto;
+  margin-left: 5px;
+  padding-left: 10px;
+`;
 
 const CommentBox = styled.div`
   width: 350px;
@@ -304,7 +411,6 @@ const CommentBack = styled.div`
 
 const CommentMenuBox = styled.div`
   position: relative;
-  width: 110px;
   height: 70px;
   flex-direction: column;
   display: flex;
