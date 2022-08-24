@@ -34,7 +34,7 @@ export const __getKakaoTkn = createAsyncThunk(
         response.data;
       console.log(accessToken, refreshToken);
       const response2 = await axios.post(
-        "http://13.209.17.192/api/auth/register",
+        "http://3.39.232.153/api/auth/register",
         {
           accessToken,
           refreshToken,
