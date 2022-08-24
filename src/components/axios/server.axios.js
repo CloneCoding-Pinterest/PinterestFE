@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as reactJwt from "react-jwt";
 const serverAxios = axios.create({
-  baseURL: "http://13.209.17.192",
+  baseURL: process.env.REACT_APP_API,
 });
 /** @param { Request } req */
 const requestHandler = async (req) => {
@@ -19,7 +19,7 @@ const requestHandler = async (req) => {
       //성공한 경우
       // 1. 만료되지 않은 올바른 refreshToken이 도착해서 새accessToken을 반환하는 경우
       const respense = await axios.get(
-        `http://13.209.17.192/api/auth/token?refreshToken=${refreshToken}`
+        `http://3.39.232.153/api/auth/token?refreshToken=${refreshToken}`
       );
 
       localStorage.setItem("accessToken", respense.data.result.accessToken);

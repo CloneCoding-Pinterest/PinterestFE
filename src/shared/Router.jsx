@@ -1,5 +1,5 @@
 import Header from "../components/common/Header";
-import LoginCommen from "../components/LoginCommen/LoginCommen";
+import LoginCommon from "../components/LoginCommon/LoginCommon";
 import LoginLoading from "../pages/LoginLoading";
 import React from "react";
 import Main from "../pages/Main";
@@ -7,6 +7,7 @@ import Post from "../pages/Post";
 import MyPage from "../pages/MyPage";
 import NotFound from "../pages/NotFound";
 import Detail from "../pages/Detail";
+import Intro from "../pages/Intropage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const Router = () => {
@@ -15,7 +16,8 @@ const Router = () => {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/signin" element={<LoginCommen />} />
+          <Route path="/intro" element={<Intro />} />
+          <Route path="/signin" element={<LoginCommon />} />
           <Route path="/loading" element={<LoginLoading />} />
           <Route path="/" element={<Main />} />
           <Route path="/post/" element={<Post />} />
