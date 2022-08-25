@@ -27,10 +27,10 @@ function check_size(event) {
    생성된 핀을 보여주는  자식 컴포넌트 */
 function Pin(props) {
   return (
-    <div className={`card card_${props.pinDetails.picSize}`}>
+    <div className={`card card_${props.inputs.picSize}`}>
       {" "}
       {/* 이미지 크기 */}
-      <div className="pin_title">{props.pinDetails.title}</div> {/* 핀 제목 */}
+      <div className="pin_title">{props.inputs.title}</div> {/* 핀 제목 */}
       <div className="pin_modal">
         <div className="modal_head">
           <div className="save_card">저장</div>
@@ -48,7 +48,6 @@ function Pin(props) {
                 className="pint_mock_icon"
               />
             </div>
-            <span>{props.pinDetails.author}</span>
           </div>
 
           {/* 핀 제목 보여줌 */}
@@ -61,7 +60,7 @@ function Pin(props) {
                 className="pint_mock_icon"
               />
             </div>
-            <span>{props.pinDetails.title}</span>
+            <span>{props.inputs.title}</span>
           </div>
 
           {/* 핀에 대한 설명 보여줌 */}
@@ -73,17 +72,13 @@ function Pin(props) {
                 className="pint_mock_icon"
               />
             </div>
-            <span>{props.pinDetails.content}</span>
+            <span>{props.inputs.content}</span>
           </div>
         </div>
       </div>
       {/* 핀 이미지의 크기에 따라 핀 이미지 보여줌 */}
       <div className="pin_image">
-        <img
-          onLoad={check_size}
-          src={props.pinDetails.picUrl}
-          alt="pin_image"
-        />
+        <img onLoad={check_size} src={props.inputs.picUrl} alt="pin_image" />
       </div>
     </div>
   );

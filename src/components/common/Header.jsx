@@ -1,4 +1,5 @@
 // 헤더
+import * as reacctJwt from 'react-jwt';
 
 // 훅 불러오기
 import { Link, useNavigate } from "react-router-dom";
@@ -10,86 +11,66 @@ import { Link, useNavigate } from "react-router-dom";
 // CSS 불러오기
 import styled from "styled-components";
 import { MdHomeFilled, MdLogin, MdLogout, MdCreate } from "react-icons/md";
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 function Header(props){
     // const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    // const {userLogin} = props; // User.js에서 유저의 로그인 여부를 알려주는 userLogin을 props로 받음
+    const onClickLogout = (ev) => {
+        ev.preventDefault();
 
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+
+        alert('로그아웃 되셨습니다.');
+        navigate('/');
+    }
+    // const {userLogin} = props; // User.js에서 유저의 로그인 여부를 알려주는 userLogin을 props로 받음
     return (
         <Contents>
             <header>
                 <div className="contents_area">
                     <Link to="/"> {/* 메인 페이지로 이동 */}
-                        <span className="show_at_md">
-                            인터레스트
-                        </span>
-                        <span className="hide_at_md">
-                            핀터레스트 절대 아니고 "인터레스트"
+                        <span>
+                            핀터레스트
                         </span>
                     </Link>
 
                     {/* 로그인 여부에 관계 없이 헤더에 "홈" 띄우기 */}
                     <div className="right">
-                        <Link to="/"> {/* "홈" 클릭 시 메인 페이지로 이동 */}
-                            <span className="show_at_md">
-                                <MdHomeFilled />
-                            </span>
+                        <Link to="/main">
                             <span className="hide_at_md">
-                                홈
+                                핀 보기
                             </span>
                         </Link>
-                        
-                        {/* 로그인한 유저의 경우 헤더에 "내 핀", "핀 만들기", "로그아웃" 띄우기*/}
-                        {/* {userLogin && (
-                        <> */}
-                            <Link to="/mypage"> {/* "내 핀" 클릭 시 마이 페이지로 이동 */}
-                                내 핀
-                                <div className="show_at_md"></div>
-                                <div className="hide_at_md"></div>
-                            </Link>
 
-                            <Link to="/post"> {/* "핀 만들기" 클릭 시 핀 생성 페이지로 이동 */}
-                                <div className="show_at_md">
-                                    <MdCreate />
-                                </div>
+                        {localStorage.getItem('accessToken') === null
+                        ? (<>
+                            <Link to={"/signin"}>
+                                <span className="hide_at_md">
+                                    로그인
+                                </span>
+                            </Link>
+                          </>)
+                        : (<>
+                            <Link to="/post">
                                 <div className="hide_at_md">
                                     핀 만들기
                                 </div>
                             </Link>
 
-                            <div className="btn" onClick={()=>{ // "로그아웃" 클릭 시 메인 페이지로 이동 
-                                // dispatch(signOutUser())
-                                navigate('/')
-                            }}>
-                                <span className="show_at_md">
-                                    <MdLogout />
-                                </span>
+                            <div className="btn" onClick={(ev) => onClickLogout(ev)}>
                                 <span className="hide_at_md">
                                     로그아웃
                                 </span>
                             </div>
-                        {/* </>
-                        ) } */}
+                          </>)
+                        }
 
-                        {/* 로그인하지 않은 유저의 경우 헤더에 "로그인", "회원가입" 띄우기*/}
-                        {/* {!userLogin && ( 
-                        <> */}
-                            <Link to={"/sign/in"}>
-                                <span className="show_at_md">
-                                    <MdLogin />
-                                </span>
-                                <span className="hide_at_md">
-                                    로그인
-                                </span>
-                            </Link>
+                        
 
-                            <Link to={"/sign/up"}>
-                                회원가입
-                            </Link>
-                        {/* </>
-                        )} */}
                     </div>
                 </div>
             </header>
