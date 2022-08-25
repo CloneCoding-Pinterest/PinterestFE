@@ -33,4 +33,49 @@
 - 게시글 수정 페이지
 ![detail-update](https://user-images.githubusercontent.com/86697114/186668986-3806db89-105e-4f78-ad02-8f2f315d3698.png)
 
+### comment
+
+```jsx
+commentId  : number
+userId     : number
+pinId      : number
+content    : string
+createdAt  : Date
+
+`localhost:3000/api/pin?page=${1}&pageCount=${10}`
+```
+
+### Response Form
+
+```jsx
+isSuccess : boolean
+message   : string
+result    : object
+```
+
+```jsx
+{
+  isSuccess: true,
+  message: '',
+  result: {
+  }
+}
+```
+
+### JWT Error `JWT 에러 존재`
+
+```jsx
+//  JWT 토큰이 필요한 도메인에서는 다음의 에러가 발생할 수 있습니다.
+{
+  isSuccess: false,
+  message: “토큰이 필요합니다.” || “만료된 토큰입니다.” || “유효하지 않은 토큰입니다.” || err.message,
+  result: {}
+}
+```
+![api1](https://user-images.githubusercontent.com/109029407/186673278-dbdc7f9d-6ead-43e9-9806-214d23aab847.png)
+![api2](https://user-images.githubusercontent.com/109029407/186673294-15ff396f-5fda-4c1e-bd1a-470202c62450.png)
+![api3](https://user-images.githubusercontent.com/109029407/186673307-bf4459be-2991-458e-b7b4-1b0c9a4021d1.png)
+![api4](https://user-images.githubusercontent.com/109029407/186673316-bede57f3-a31a-4fd2-9e2c-d5eb0631a175.png)
+![api5](https://user-images.githubusercontent.com/109029407/186673330-8596d943-6e45-43ab-bdf6-baf0053db1aa.png)
+
 ## 트러블 슈팅(Trouble Shooting)
