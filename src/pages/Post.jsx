@@ -3,7 +3,7 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Layout from "../components/common/Layout";
+import Layout from "../components/Common/Layout";
 
 import axios from "axios";
 import { getCookie } from "../cookie";
