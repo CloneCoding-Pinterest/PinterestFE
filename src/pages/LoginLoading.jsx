@@ -17,9 +17,8 @@ function LoginLoading() {
   return (
     <div>
       <Container>
-        <Img alt="로딩" src="loading.png" />
-
-        {isLogin && navigate("/")}
+        <Img alt="로딩" src="./images/loading.png" />
+        {isLogin && navigate("/main")}
       </Container>
     </div>
   );

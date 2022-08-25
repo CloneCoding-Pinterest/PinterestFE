@@ -8,6 +8,7 @@ import React, { useState, useRef } from "react";
 // 데이터 주고받기
 // import { getCookie } from '../cookie';
 import serverAxios from "./axios/server.axios";
+import { Link, useNavigate } from "react-router-dom";
 
 import "../styles/modal_styles.css";
 
@@ -51,7 +52,14 @@ function check_size(event) {
 }
 
 // Main.jsx에서 add_pin={this.add_pin}를 파라미터로 받아오는 자식 컴포넌트
-function Modal() {
+function Modal(props) {
+  const [inputs, setInputs] = useState({
+    title: "",
+    content: "",
+    picSize: "small",
+    picUrl: "",
+  });
+
   const [fileupload, setFileUpload] = useState([]);
   function upload_img(event, inputs, setInputs, setShowLabel, setShowModalPin) {
     setFileUpload(event.target.files[0]);
@@ -80,6 +88,7 @@ function Modal() {
   const fileInput = useRef();
   const [pictureChanged, setPictureChanged] = useState(false);
   const [pictureUploaded, setPictureUploaded] = useState(false);
+  const navigate = useNavigate();
 
   // 핀 이미지 파일에 대해 POST 요청
   const pictureUploadHandler = async (ev, add_pin) => {
@@ -88,6 +97,8 @@ function Modal() {
     const formData = new FormData();
     formData.append("picValue", fileupload);
     console.log(fileupload);
+
+
     await serverAxios
       .post(
         `http://52.79.103.132/api/pin?title=${inputs.title}&content=${inputs.content}&picSize=${inputs.picSize}`,
@@ -97,15 +108,16 @@ function Modal() {
         const data = res.data;
         console.log(res);
 
-        if (data.success) {
-          alert("이미지가 등록되었습니다.");
-          setPictureUploaded(true);
+        alert("이미지가 등록되었습니다.");
 
-          setInputs({
-            ...inputs,
-            picUrl: data.picUrl,
-          });
-        }
+        setPictureUploaded(true);
+        setInputs({
+          ...inputs,
+          picUrl: data.picUrl,
+        });
+
+        navigate('/');
+
       })
       .catch((err) => {
         console.log(err);
@@ -113,12 +125,12 @@ function Modal() {
   };
 
   // 핀 제목 및 내용 데이터를 담을 ueState 설정
-  const [inputs, setInputs] = useState({
-    title: "",
-    content: "",
-    picSize: "small",
-    picUrl: "",
-  });
+  // const [inputs, setInputs] = useState({
+  //   title: "",
+  //   content: "",
+  //   picSize: "small",
+  //   picUrl: "",
+  // });
   // const { title, content } = inputs;
 
   // input에서 핀 제목 및 내용 변경사항을 저장하는 함수
