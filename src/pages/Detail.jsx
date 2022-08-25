@@ -14,6 +14,7 @@ const Detail = () => {
   const [pinmenuOpen, setPinMenuOpen] = useState(false);
   const { pinId } = useParams();
   // const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [detail, setDetail] = useState([]);
 
@@ -76,7 +77,12 @@ const Detail = () => {
                       </ModalBack>
                     ) : null}
                   </DetailMenu>
-                  <SaveButton>저장</SaveButton>
+                  <div>
+                    <BackButton onClick={() => navigate("/")}>
+                      뒤로가기
+                    </BackButton>
+                    <SaveButton>저장</SaveButton>
+                  </div>
                 </DetailIcon>
                 <DetailTitle>{detail.title}</DetailTitle>
 
@@ -198,6 +204,24 @@ const DetailMenu = styled.div`
   }
 `;
 
+const BackButton = styled.button`
+  width: 50px;
+  height: 30px;
+  border: none;
+  border-radius: 15px;
+  color: red;
+  font-size: 11px;
+  font-weight: bold;
+  background-color: #eee;
+  cursor: pointer;
+  margin-right: 10px;
+
+  &:hover {
+    background-color: red;
+    color: #eee;
+  }
+`;
+
 const SaveButton = styled.button`
   width: 50px;
   height: 30px;
@@ -208,6 +232,10 @@ const SaveButton = styled.button`
   font-weight: bold;
   background-color: red;
   cursor: pointer;
+
+  &:hover {
+    opacity: 50%;
+  }
 `;
 
 const DetailProfile = styled.div`
