@@ -8,7 +8,7 @@
 | 성함 | GitHub | 
 | :-- | :-- |
 | 이민영 |  |
-| 문창용 | [@sumin-dev](https://github.com/sumin-dev) |  
+| 문창용 | [@cmun2](https://github.com/cmun2) |  
 | 조영은 | [@yeun38](https://github.com/yeun38) |  
 
 ## 프로젝트 시연사진
