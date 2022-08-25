@@ -79,3 +79,11 @@ result    : object
 ![api5](https://user-images.githubusercontent.com/109029407/186673330-8596d943-6e45-43ab-bdf6-baf0053db1aa.png)
 
 ## 트러블 슈팅(Trouble Shooting)
+카카오 로그인 invalid client issue : https://github.com/CloneCoding-Pinterest/PinterestFE/issues/24
+카카오 KOE320에러 : https://github.com/CloneCoding-Pinterest/PinterestFE/issues/26
+PR중 파일 드랍이슈 : https://github.com/CloneCoding-Pinterest/PinterestFE/issues/22
+PR중 yarn.lock 파일이슈 : https://github.com/CloneCoding-Pinterest/PinterestFE/issues/19
+Comment Edit & Delete Id Issue : https://github.com/CloneCoding-Pinterest/PinterestFE/issues/27
+Detail Page Reloading Issue : https://github.com/CloneCoding-Pinterest/PinterestFE/issues/23
+
+
