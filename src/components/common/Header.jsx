@@ -33,33 +33,37 @@ function Header(props){
             <header>
                 <div className="contents_area">
                     <Link to="/"> {/* 메인 페이지로 이동 */}
-                        <span>
-                            핀터레스트
-                        </span>
+                        {/* <span style={{}}> */}
+                            {/* 핀터레스트 */}
+                            <div style={{marginTop: "20px"}}><img alt='logo' src='./images/smallLogo.png' style={{width: "30px", height: "30px", }}></img></div>
+                        {/* </span> */}
                     </Link>
 
                     {/* 로그인 여부에 관계 없이 헤더에 "홈" 띄우기 */}
                     <div className="right">
-                        <Link to="/main">
+                        {/* <Link to="/main">
                             <span className="hide_at_md">
                                 핀 보기
                             </span>
-                        </Link>
+                        </Link> */}
 
                         {localStorage.getItem('accessToken') === null
                         ? (<>
-                            <Link to={"/signin"}>
-                                <span className="hide_at_md">
+                            {/* <Link to={"/signin"}> */}
+                                {/* navigate("/signin"); */}
+                            <div style={{marginTop: "20px", }} onClick={(e)=>{navigate("/signin");}}>
+                                {/* <span className="hide_at_md"> */}
                                     로그인
-                                </span>
-                            </Link>
+                                {/* </span> */}
+                                </div>
+                            {/* </Link> */}
                           </>)
                         : (<>
-                            <Link to="/post">
+                            {/* <Link to="/post">
                                 <div className="hide_at_md">
                                     핀 만들기
                                 </div>
-                            </Link>
+                            </Link> */}
 
                             <div className="btn" onClick={(ev) => onClickLogout(ev)}>
                                 <span className="hide_at_md">
