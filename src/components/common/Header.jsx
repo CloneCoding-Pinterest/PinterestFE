@@ -49,11 +49,15 @@ function Header(props) {
 
           {/* 로그인 여부에 관계 없이 헤더에 "홈" 띄우기 */}
           <div className="right">
-            {/* <Link to="/main">
-                            <span className="hide_at_md">
-                                핀 보기
-                            </span>
-                        </Link> */}
+            <div
+              style={{ marginTop: "20px" }}
+              onClick={(e) => {
+                navigate("/main");
+              }}
+            >
+              {/* <span className="hide_at_md"> */}핀 보기
+              {/* </span> */}
+            </div>
 
             {localStorage.getItem("accessToken") === null ? (
               <>
