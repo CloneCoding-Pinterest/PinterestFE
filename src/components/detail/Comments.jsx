@@ -119,7 +119,7 @@ const Comments = () => {
     <>
       <CommentBox>
         <CommentList>
-          <h4>댓글 4개</h4>
+          <h4>댓글 {comments.length}개</h4>
           <CommentBtn>
             <MdKeyboardArrowDown onClick={openModal} />
             {/* <MdKeyboardArrowDown onClick={closeModal} /> */}
@@ -139,7 +139,9 @@ const Comments = () => {
                       <ContentComment>{comment.content}</ContentComment>
                     </UserWrap>
                     <OptionsComment>
-                      <CreatedAtTime>{comment.createdAt}</CreatedAtTime>
+                      <CreatedAtTime>
+                        {comment.createdAt.slice(0, 16)}
+                      </CreatedAtTime>
                       <DoubleComment>답변</DoubleComment>
                       <Like>♥</Like>
                       <CommentOptionsModal>
@@ -283,6 +285,7 @@ const ProfileComment = styled.div`
   border-radius: 50%;
   margin-left: 15px;
   cursor: pointer;
+  margin-bottom: 9px;
 `;
 
 const ContentWrap = styled.div`
@@ -303,10 +306,12 @@ const OptionsComment = styled.div`
 `;
 const IdComment = styled.span`
   margin-left: 10px;
+  font-size: 13px;
 `;
 
 const ContentComment = styled.span`
   margin-left: 10px;
+  font-size: 13px;
 `;
 
 const CreatedAtTime = styled.div`
@@ -363,6 +368,7 @@ const CommentProfile = styled.div`
   height: 35px;
   border-radius: 50%;
   border: 2px solid orange;
+  margin-top: 10px;
 `;
 
 const CommentInput = styled.input`
@@ -373,6 +379,7 @@ const CommentInput = styled.input`
   cursor: auto;
   margin-left: 5px;
   padding-left: 10px;
+  margin-top: 10px;
 `;
 
 const CommentCancelBtn = styled.button`

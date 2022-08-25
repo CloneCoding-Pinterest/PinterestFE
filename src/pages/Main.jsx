@@ -1,4 +1,5 @@
 
+
 // 핀 생성 모달 및 생성된 핀들을 띄우는 Main이자 Post 페이지
 import React from "react";
 
@@ -8,10 +9,14 @@ import Modal from "../components/Modal";
 import PinWrapper from "./PinWrapper";
 import serverAxios from "../components/axios/server.axios";
 
-class Main extends React.Component {
-  // FinalBoard는 핀 생성 데이터 pins와 모달 창 보여주기 여부인 show_modal을 파라미터로 보내주는 부모 컴포넌트
-  constructor(props) {
-    super(props);
+
+//     this.state = {
+//       pins: [], // 디폴트 값으로 핀 생성 데이터는 비어있음
+//       pinList: [],
+//       show_modal: false, // 디폴트 값으로 모달 숨김
+//     };
+//   }
+
 
     this.state = {
       pins: [], // 디폴트 값으로 핀 생성 데이터는 비어있음
@@ -27,12 +32,10 @@ class Main extends React.Component {
 
       new_pins.push(<Pin inputs={inputs} key={_state.pins.length} />);
 
-      return {
-        pins: new_pins, // pins에 새로운 데이터 넣고,
-        show_modal: false, // 모달 창 숨김
-      };
-    });
-  };
+//   async componentDidMount() {
+//     const pinList = await this.getPin();
+//     this.setState({ pinList });
+//   }
 
   async componentDidMount() {
     const pinList = await this.getPin();
@@ -92,4 +95,10 @@ class Main extends React.Component {
   }
 }
 
-export default Main;
+//         </div>
+//       </>
+//     );
+//   }
+// }
+
+// export default Main;

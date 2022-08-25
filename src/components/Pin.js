@@ -1,3 +1,4 @@
+
 // 메인 페이지에 생성된 핀 나열함
 // Main 페이지와 동격
 // 😀 serverAxios를 통해 GET 요청으로 변경
@@ -85,3 +86,4 @@ function Pin(props) {
 }
 
 export default Pin;
+
