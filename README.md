@@ -5,8 +5,8 @@
 
 ## 팀원
 
-| 성함 | GitHub |
-| :-- | :-- | :-: |
+| 성함 | GitHub | 
+| :-- | :-- |
 | 이민영 |  |
 | 문창용 | [@sumin-dev](https://github.com/sumin-dev) |  
 | 조영은 | [@yeun38](https://github.com/yeun38) |  
