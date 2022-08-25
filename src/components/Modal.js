@@ -8,6 +8,7 @@ import React, { useState, useRef } from "react";
 // 데이터 주고받기
 // import { getCookie } from '../cookie';
 import serverAxios from "./axios/server.axios";
+import { Link, useNavigate } from "react-router-dom";
 
 import "../styles/modal_styles.css";
 
@@ -87,6 +88,7 @@ function Modal(props) {
   const fileInput = useRef();
   const [pictureChanged, setPictureChanged] = useState(false);
   const [pictureUploaded, setPictureUploaded] = useState(false);
+  const navigate = useNavigate();
 
   // 핀 이미지 파일에 대해 POST 요청
   const pictureUploadHandler = async (ev, add_pin) => {
@@ -95,6 +97,8 @@ function Modal(props) {
     const formData = new FormData();
     formData.append("picValue", fileupload);
     console.log(fileupload);
+
+
     await serverAxios
       .post(
         `http://52.79.103.132/api/pin?title=${inputs.title}&content=${inputs.content}&picSize=${inputs.picSize}`,
@@ -104,15 +108,16 @@ function Modal(props) {
         const data = res.data;
         console.log(res);
 
-        if (data.success) {
-          alert("이미지가 등록되었습니다.");
-          setPictureUploaded(true);
+        alert("이미지가 등록되었습니다.");
 
-          setInputs({
-            ...inputs,
-            picUrl: data.picUrl,
-          });
-        }
+        setPictureUploaded(true);
+        setInputs({
+          ...inputs,
+          picUrl: data.picUrl,
+        });
+
+        navigate('/');
+
       })
       .catch((err) => {
         console.log(err);

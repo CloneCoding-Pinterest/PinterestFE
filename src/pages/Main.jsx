@@ -18,6 +18,8 @@ class Main extends React.Component {
     };
   }
 
+  pinList = [];
+
   // 핀 생성
   add_pin = (inputs) => {
     this.setState((_state) => {
@@ -36,9 +38,6 @@ class Main extends React.Component {
     this.getPin();
   }
 
-  //   let page = 1;
-  //   const count = 18;
-  //   const all = "all";
   getPin = async () => {
     await serverAxios
       .get(`http://52.79.103.132/api/pin?/api/pin?page=1&count=18&target=all`)
@@ -51,30 +50,46 @@ class Main extends React.Component {
 
   render() {
     return (
-      <div>
-        <div className="navigation_bar">
-          {/* 핀 생성 버튼 📌 클릭하면 모달 창 보여줌 */}
-          <div
-            onClick={() => this.setState({ show_modal: true })}
-            className="pint_mock_icon_container add_pin"
-          >
-            <div className="pint_mock_icon">📌</div>
+      <>
+        <div>
+          {/* 클릭하는 버튼 : 클릭하면 모달이 나옴 */}
+          <div className="navigation_bar">
+            {/* 핀 생성 버튼 📌 클릭하면 모달 창 보여줌 */}
+            <div
+              onClick={() => this.setState({ show_modal: true })}
+              className="pint_mock_icon_container add_pin"
+            >
+              <div className="pint_mock_icon">📌</div>
+            </div>
           </div>
-        </div>
 
-        <div className="pin_container">{this.state.pins}</div>
+          {/* 모달 - 이미지 업로드 */}
+          <div
+            onClick={(event) =>
+              event.target.className === "add_pin_modal"
+                ? this.setState({ show_modal: false })
+                : null
+            }
+            className="add_pin_modal_container"
+          >
+            {this.state.show_modal ? <Modal add_pin={this.add_pin} /> : null}
+          </div>
 
-        <div
-          onClick={(event) =>
-            event.target.className === "add_pin_modal"
-              ? this.setState({ show_modal: false })
-              : null
-          }
-          className="add_pin_modal_container"
-        >
-          {this.state.show_modal ? <Modal add_pin={this.add_pin} /> : null}
+          {/* <div className="pin_container">{this.state.pins}</div> */}
+          
         </div>
-      </div>
+        <div>
+          
+          {/* 누구야? */}
+
+          Pin1
+          Pin1
+          Pin1
+          Pin1
+          
+
+        </div>
+      </>
     );
   }
 }
