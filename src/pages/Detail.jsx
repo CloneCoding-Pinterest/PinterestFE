@@ -1,6 +1,6 @@
 import React, { useState, useRef, forwardRef, useEffect } from "react";
 import styled from "styled-components";
-import Layout from "../components/Common/Layout";
+import Layout from "../components/common/Layout";
 import Comments from "../components/detail/Comments";
 import { MdMoreHoriz, MdAccountCircle } from "react-icons/md";
 import EditPin from "../components/detail/EditPin";
