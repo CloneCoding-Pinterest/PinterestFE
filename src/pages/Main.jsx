@@ -1,10 +1,11 @@
-// 핀 생성 모달 및 생성된 핀들을 띄우는 Main이자 Post 페이지
 
+// 핀 생성 모달 및 생성된 핀들을 띄우는 Main이자 Post 페이지
 import React from "react";
 
 import "../styles/final_board_styles.css";
 import Pin from "../components/Pin.js";
 import Modal from "../components/Modal";
+import PinWrapper from "./PinWrapper";
 import serverAxios from "../components/axios/server.axios";
 
 class Main extends React.Component {
@@ -14,11 +15,10 @@ class Main extends React.Component {
 
     this.state = {
       pins: [], // 디폴트 값으로 핀 생성 데이터는 비어있음
+      pinList: [],
       show_modal: false, // 디폴트 값으로 모달 숨김
     };
   }
-
-  pinList = [];
 
   // 핀 생성
   add_pin = (inputs) => {
@@ -34,18 +34,19 @@ class Main extends React.Component {
     });
   };
 
-  componentDidMount() {
-    this.getPin();
+  async componentDidMount() {
+    const pinList = await this.getPin();
+    this.setState({ pinList });
   }
 
   getPin = async () => {
-    await serverAxios
-      .get(`http://52.79.103.132/api/pin?/api/pin?page=1&count=18&target=all`)
-      .then((res) => {
-        console.log(res.data.result.pinList);
-
-        return;
-      });
+    try {
+      const res = await serverAxios
+        .get(`http://52.79.103.132/api/pin?/api/pin?page=1&count=18&target=all`);
+      return res.data.result.pinList;
+    } catch(err) {
+      console.log(err);
+    }
   };
 
   render() {
@@ -78,15 +79,12 @@ class Main extends React.Component {
           {/* <div className="pin_container">{this.state.pins}</div> */}
           
         </div>
-        <div>
-          
-          {/* 누구야? */}
-
-          Pin1
-          Pin1
-          Pin1
-          Pin1
-          
+        <div className="reponsible_wrapper">
+          {
+            this.state.pinList.length === 0
+            ? <h1>텅 빈 게시글입니다.</h1>
+            : <PinWrapper pinList={this.state.pinList}/>
+          }
 
         </div>
       </>
