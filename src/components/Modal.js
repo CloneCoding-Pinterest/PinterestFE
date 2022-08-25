@@ -51,7 +51,14 @@ function check_size(event) {
 }
 
 // Main.jsx에서 add_pin={this.add_pin}를 파라미터로 받아오는 자식 컴포넌트
-function Modal() {
+function Modal(props) {
+  const [inputs, setInputs] = useState({
+    title: "",
+    content: "",
+    picSize: "small",
+    picUrl: "",
+  });
+
   const [fileupload, setFileUpload] = useState([]);
   function upload_img(event, inputs, setInputs, setShowLabel, setShowModalPin) {
     setFileUpload(event.target.files[0]);
@@ -113,12 +120,12 @@ function Modal() {
   };
 
   // 핀 제목 및 내용 데이터를 담을 ueState 설정
-  const [inputs, setInputs] = useState({
-    title: "",
-    content: "",
-    picSize: "small",
-    picUrl: "",
-  });
+  // const [inputs, setInputs] = useState({
+  //   title: "",
+  //   content: "",
+  //   picSize: "small",
+  //   picUrl: "",
+  // });
   // const { title, content } = inputs;
 
   // input에서 핀 제목 및 내용 변경사항을 저장하는 함수

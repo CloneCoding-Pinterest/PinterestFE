@@ -19,11 +19,11 @@ class Main extends React.Component {
   }
 
   // 핀 생성
-  add_pin = (pinDetails) => {
+  add_pin = (inputs) => {
     this.setState((_state) => {
       const new_pins = [..._state.pins];
 
-      new_pins.push(<Pin pinDetails={pinDetails} key={_state.pins.length} />);
+      new_pins.push(<Pin inputs={inputs} key={_state.pins.length} />);
 
       return {
         pins: new_pins, // pins에 새로운 데이터 넣고,
@@ -43,8 +43,9 @@ class Main extends React.Component {
     await serverAxios
       .get(`http://52.79.103.132/api/pin?/api/pin?page=1&count=18&target=all`)
       .then((res) => {
-        console.log(res);
-        return res.result;
+        console.log(res.data.result.pinList);
+
+        return;
       });
   };
 
