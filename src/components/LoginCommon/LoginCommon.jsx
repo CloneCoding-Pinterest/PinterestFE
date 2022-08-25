@@ -7,7 +7,10 @@ function LoginCommon() {
     <LoginLayout>
       <Container>
         <Logo>
-          <Img alt="로고" src="logo.png" />
+          <Img
+            alt="로고"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoP2WP2vXwFoioWB5TrtQI_iK8XCP85hekCA&usqp=CAU"
+          />
         </Logo>
         <TitleLayout>
           <Title>Pinterest에 오신 것을 환영합니다</Title>

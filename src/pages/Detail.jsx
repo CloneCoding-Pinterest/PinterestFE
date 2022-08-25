@@ -78,7 +78,7 @@ const Detail = () => {
                     ) : null}
                   </DetailMenu>
                   <div>
-                    <BackButton onClick={() => navigate("/")}>
+                    <BackButton onClick={() => navigate("/main")}>
                       뒤로가기
                     </BackButton>
                     <SaveButton>저장</SaveButton>
